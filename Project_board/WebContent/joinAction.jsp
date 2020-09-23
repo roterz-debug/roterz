@@ -22,11 +22,23 @@
 </head>
 <body>
 	<%
+		String userID = null;
+		if (session.getAttribute("userID") != null) {
+			userID = (String) session.getAttribute("userID");
+		}
+		if (userID != null) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('이미 로그인 되어있습니다.')");
+			script.println("location.href = 'main.jsp'");
+			script.println("</script>");
+		}
+		
 		if (user.getUserID() == null || user.getUserPassword() == null || user.getUserName() == null
 				|| user.getUserGender() == null || user.getUserEmail() == null) {
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
-			script.println("alert = ('입력이 되지 않은 부분이 있습니다');");
+			script.println("alert('입력이 되지 않은 부분이 있습니다')");
 			script.println("history.back()");
 			script.println("</script>");
 
@@ -39,17 +51,16 @@
 			if (result == -1) {
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
-				script.println("alert = ('이미 존재하는 아이디입니다.');");
+				script.println("alert('이미 존재하는 아이디입니다.')");
 				script.println("history.back()");
 				script.println("</script>");
-				System.out.println(result);
 
 			} else {
+				session.setAttribute("userID", user.getUserID());
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("location.href = 'main.jsp'");
 				script.println("</script>");
-				System.out.println(result);
 			}
 		}
 	%>
